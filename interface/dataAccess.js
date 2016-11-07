@@ -1,4 +1,8 @@
-/**
- * Created by gcunh on 11/7/2016.
- */
+var request = require('request');
 
+class dataAccess {
+    private url = '';
+    private key = '';
+
+
+}
