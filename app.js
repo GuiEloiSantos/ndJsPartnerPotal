@@ -54,28 +54,32 @@ app.use(function(req, res, next) {
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
-    res.status(500);
+  app.use(function(err, req, res, next) {
+      res.status(err.status || 500);
 
-    // respond with html page
-    if (req.accepts('html')) {
-        res.render('500', { url: req.url, layout:false });
-        return;
-    }
 
-    // respond with json
-    if (req.accepts('json')) {
-        res.send({ error: 'Not found' });
-        return;
-    }
+      // respond with html page
+      if (req.accepts('html')) {
+          res.render('500', { url: req.url, layout:false });
+          return;
+      }
 
-    // default to plain-text. send()
-    res.type('txt').send('Not found');
+      // respond with json
+      if (req.accepts('json')) {
+          res.send({ error: 'Internal Error' });
+          return;
+      }
+
+      // default to plain-text. send()
+      res.type('txt').send('Internal Error');
+  });
 }
 
 // production error handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
-    res.status(500);
+  res.status(err.status || 500);
+
 
     // respond with html page
     if (req.accepts('html')) {
@@ -85,12 +89,12 @@ app.use(function(err, req, res, next) {
 
     // respond with json
     if (req.accepts('json')) {
-        res.send({ error: 'Not found' });
+        res.send({ error: 'Internal Error' });
         return;
     }
 
     // default to plain-text. send()
-    res.type('txt').send('Not found');
+    res.type('txt').send('Internal Error');
 });
 
 
